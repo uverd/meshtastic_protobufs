@@ -9,6 +9,17 @@ option java_package = "com.geeksville.mesh";
 option swift_prefix = "";
 
 /*
+ * Semantic kind of a TreeGuard payload.
+ * Zero is reserved so payloads produced before this field was added decode
+ * explicitly as unspecified.
+ */
+enum TreeGuardPacketKind {
+  PACKET_KIND_UNSPECIFIED = 0;
+  VIBRATION_EVENT = 1;
+  STATUS = 2;
+}
+
+/*
  * TreeGuard sensor metrics for tree health monitoring
  * Captures vibration analysis and environmental data for detecting tree stress
  */
@@ -65,4 +76,10 @@ message TreeGuardMetrics {
    * Battery state of charge percentage (0-100%)
    */
   float battery_soc_percent = 10;
+
+  /*
+   * Explicit payload semantics; absent in legacy payloads and therefore
+   * decoded as PACKET_KIND_UNSPECIFIED.
+   */
+  TreeGuardPacketKind packet_kind = 11;
 }
